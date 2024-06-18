@@ -44,33 +44,14 @@ public:
         return items_;
     }
 
-
-    PtrVector& operator=(const PtrVector& rhs) {
-        // При присваивании PtrVector самому себе произойдёт удаление не только
-        // своих элементов, но и элементов rhs.
-        if (this != &rhs) {
-            try {
-                auto rhs_copy(rhs);
-                swap(rhs_copy);
-            }
-            catch (...) {
-                throw;
-            }
-        }
-            return *this;
-    }
-
-
-
 private:
     void DeleteItems() noexcept {
         for (auto p : items_) {
+            if (p == nullptr){
+                return;
+            }
             delete p;
         }
-    }
-
-    void swap(PtrVector& rhs) noexcept {
-        items_.swap(rhs.items_);
     }
 
     std::vector<T*> items_;

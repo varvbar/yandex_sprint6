@@ -42,11 +42,10 @@ public:
     }
 
     explicit Octopus(int num_tentacles) {
-        Tentacle* t = nullptr;
-        ScopedPtr smart_t(t);
+        
         try {
             for (int i = 1; i <= num_tentacles; ++i) {
-                smart_t = ScopedPtr(new Tentacle(i));      // Может выбросить исключение bad_alloc
+                ScopedPtr smart_t(new Tentacle(i));      // Может выбросить исключение bad_alloc
                 tentacles_.GetItems().push_back(smart_t.GetRawPtr());  // Может выбросить исключение bad_alloc
 
                 // Обнуляем указатель на щупальце, которое уже добавили в tentacles_,
@@ -58,7 +57,6 @@ public:
             //Cleanup();
             // Удаляем щупальце, которое создали, но не добавили в tentacles_
             //delete t;
-            smart_t.Release();
             // Конструктор не смог создать осьминога с восемью щупальцами,
             // поэтому выбрасываем исключение, чтобы сообщить вызывающему коду об ошибке
             // throw без параметров внутри catch выполняет ПЕРЕВЫБРОС пойманного исключения
