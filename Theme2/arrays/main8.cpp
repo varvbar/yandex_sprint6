@@ -31,8 +31,7 @@ public:
     ArrayPtr(const ArrayPtr&) = delete;
 
     ~ArrayPtr() {
-        
-        raw_ptr_ = Release();
+        delete[] raw_ptr_;
     }
 
     // Запрещаем присваивание
@@ -41,13 +40,10 @@ public:
     // Прекращает владением массивом в памяти, возвращает значение адреса массива
     // После вызова метода указатель на массив должен обнулиться
     [[nodiscard]] Type* Release() noexcept {
-
-        if (raw_ptr_) {
-            delete[] raw_ptr_;
-        }
+        Type* temp = raw_ptr_;
         raw_ptr_ = nullptr;
 
-        return nullptr;
+        return temp;
     }
 
     // Возвращает ссылку на элемент массива с индексом index
